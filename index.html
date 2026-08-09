@@ -440,13 +440,13 @@
   <section class="seccion-categorias">
     <h2>📂 Filtrar por categoría</h2>
     <div class="categorias">
-      <button class="cat-btn todos activa" onclick="filtrar('todos', this)">✅ Todos</button>
-      <button class="cat-btn" onclick="filtrar('automotriz', this)">🔧 Automotriz</button>
-      <button class="cat-btn" onclick="filtrar('alimentos', this)">🍞 Alimentos</button>
-      <button class="cat-btn" onclick="filtrar('salud', this)">💊 Salud y Farmacia</button>
-      <button class="cat-btn" onclick="filtrar('hogar', this)">🏠 Hogar y Construcción</button>
-      <button class="cat-btn" onclick="filtrar('belleza', this)">💄 Belleza y Cuidado</button>
-      <button class="cat-btn" onclick="filtrar('servicios', this)">📋 Servicios</button>
+      <button class="cat-btn todos activa" onclick="filtrar('todos')">✅ Todos</button>
+      <button class="cat-btn" onclick="filtrar('automotriz')">🔧 Automotriz</button>
+      <button class="cat-btn" onclick="filtrar('alimentos')">🍞 Alimentos</button>
+      <button class="cat-btn" onclick="filtrar('salud')">💊 Salud y Farmacia</button>
+      <button class="cat-btn" onclick="filtrar('hogar')">🏠 Hogar y Construcción</button>
+      <button class="cat-btn" onclick="filtrar('belleza')">💄 Belleza y Cuidado</button>
+      <button class="cat-btn" onclick="filtrar('servicios')">📋 Servicios</button>
     </div>
   </section>
 
@@ -578,20 +578,37 @@
   </footer>
 
   <script>
-    // ✅ FILTRADO DE CATEGORÍAS — YA CORREGIDO
-    function filtrar(categoria, botonPulsado) {
+    // ✅ FILTRADO 100% COMPATIBLE CON GITHUB PAGES
+    function filtrar(categoria) {
       // Quitar clase activa de TODOS los botones
-      document.querySelectorAll('.cat-btn').forEach(boton => {
+      document.querySelectorAll('.cat-btn').forEach(function(boton) {
         boton.classList.remove('activa');
       });
 
-      // Agregar clase activa al botón que se pulsó
-      botonPulsado.classList.add('activa');
+      // Buscar y resaltar el botón pulsado
+      var botones = document.querySelectorAll('.cat-btn');
+      var textoBuscado = '';
+      
+      switch(categoria) {
+        case 'todos': textoBuscado = '✅ Todos'; break;
+        case 'automotriz': textoBuscado = '🔧 Automotriz'; break;
+        case 'alimentos': textoBuscado = '🍞 Alimentos'; break;
+        case 'salud': textoBuscado = '💊 Salud y Farmacia'; break;
+        case 'hogar': textoBuscado = '🏠 Hogar y Construcción'; break;
+        case 'belleza': textoBuscado = '💄 Belleza y Cuidado'; break;
+        case 'servicios': textoBuscado = '📋 Servicios'; break;
+      }
 
-      // Mostrar u ocultar tarjetas según la categoría
-      const tarjetas = document.querySelectorAll('.tarjeta-negocio');
-      tarjetas.forEach(tarjeta => {
-        const catTarjeta = tarjeta.dataset.cat;
+      botones.forEach(function(boton) {
+        if (boton.textContent.trim() === textoBuscado) {
+          boton.classList.add('activa');
+        }
+      });
+
+      // Mostrar u ocultar tarjetas
+      var tarjetas = document.querySelectorAll('.tarjeta-negocio');
+      tarjetas.forEach(function(tarjeta) {
+        var catTarjeta = tarjeta.getAttribute('data-cat');
         if (categoria === 'todos' || catTarjeta === categoria) {
           tarjeta.classList.remove('oculto');
         } else {
@@ -601,7 +618,7 @@
     }
 
     // ✅ BASE DE DATOS DE PRODUCTOS
-    const productos = {
+    var productos = {
       frenos: {
         nombre: "🔧 Frenos Cervantes",
         telefono: "524421235000",
@@ -769,23 +786,22 @@
       }
     };
 
-    let carrito = [];
-    let negocioActivo = null;
+    var carrito = [];
+    var negocioActivo = null;
 
     // ABRIR VENTANA DE PRODUCTOS
     function abrirProductos(clave) {
       negocioActivo = clave;
-      const neg = productos[clave];
+      var neg = productos[clave];
       document.getElementById('titulo-negocio').textContent = neg.nombre;
-      const contenedor = document.getElementById('lista-productos-ventana');
+      var contenedor = document.getElementById('lista-productos-ventana');
       contenedor.innerHTML = '';
-      neg.items.forEach(prod => {
-        contenedor.innerHTML += `
-          <div class="producto-item">
-            <span class="producto-nombre">${prod.nombre}</span>
-            <span class="producto-precio">$${prod.precio}</span>
-            <button class="btn-agregar" onclick="agregarAlCarrito('${prod.id}','${prod.nombre}',${prod.precio})">+ Agregar</button>
-          </div>`;
+      neg.items.forEach(function(prod) {
+        contenedor.innerHTML += '<div class="producto-item">' +
+          '<span class="producto-nombre">' + prod.nombre + '</span>' +
+          '<span class="producto-precio">$' + prod.precio + '</span>' +
+          '<button class="btn-agregar" onclick="agregarAlCarrito(\'' + prod.id + '\',\'' + prod.nombre + '\',' + prod.precio + ')">+ Agregar</button>' +
+        '</div>';
       });
       document.getElementById('ventanaProductos').classList.add('ventana-activa');
       document.body.style.overflow = 'hidden';
@@ -815,75 +831,74 @@
     }
 
     function agregarAlCarrito(id, nombre, precio) {
-      const existe = carrito.find(x => x.id === id);
+      var existe = carrito.find(function(x) { return x.id === id; });
       if (existe) existe.cantidad++;
-      else carrito.push({id, nombre, precio, cantidad:1});
+      else carrito.push({id:id, nombre:nombre, precio:precio, cantidad:1});
       actualizarContador();
       cerrarProductos();
       abrirCarrito();
     }
 
     function cambiarCantidad(id, suma) {
-      const articulo = carrito.find(x => x.id === id);
+      var articulo = carrito.find(function(x) { return x.id === id; });
       if (articulo) {
         articulo.cantidad += suma;
-        if (articulo.cantidad <= 0) carrito = carrito.filter(x => x.id !== id);
+        if (articulo.cantidad <= 0) carrito = carrito.filter(function(x) { return x.id !== id; });
       }
       actualizarVistaCarrito();
       actualizarContador();
     }
 
     function eliminarDelCarrito(id) {
-      carrito = carrito.filter(x => x.id !== id);
+      carrito = carrito.filter(function(x) { return x.id !== id; });
       actualizarVistaCarrito();
       actualizarContador();
     }
 
     function actualizarContador() {
-      const total = carrito.reduce((s,x) => s + x.cantidad, 0);
+      var total = carrito.reduce(function(s, x) { return s + x.cantidad; }, 0);
       document.getElementById('contador').textContent = total;
     }
 
     function actualizarVistaCarrito() {
-      const lista = document.getElementById('lista-carrito');
-      const seccionTotal = document.getElementById('seccion-total');
+      var lista = document.getElementById('lista-carrito');
+      var seccionTotal = document.getElementById('seccion-total');
       if (carrito.length === 0) {
         lista.innerHTML = '<p class="carrito-vacio">Tu carrito está vacío 😊<br>Explora negocios y agrega productos</p>';
         seccionTotal.style.display = 'none';
         return;
       }
       seccionTotal.style.display = 'block';
-      let sumaTotal = 0;
+      var sumaTotal = 0;
       lista.innerHTML = '';
-      carrito.forEach(prod => {
-        const subtotal = prod.precio * prod.cantidad;
+      carrito.forEach(function(prod) {
+        var subtotal = prod.precio * prod.cantidad;
         sumaTotal += subtotal;
-        lista.innerHTML += `
-          <div class="item-carrito">
-            <div class="item-nombre">${prod.nombre}</div>
-            <div class="item-cantidad">
-              <button class="cant-btn" onclick="cambiarCantidad('${prod.id}',-1)">−</button>
-              <span>${prod.cantidad}</span>
-              <button class="cant-btn" onclick="cambiarCantidad('${prod.id}',+1)">+</button>
-              <button class="eliminar-item" onclick="eliminarDelCarrito('${prod.id}')">🗑️</button>
-            </div>
-          </div>`;
+        lista.innerHTML += '<div class="item-carrito">' +
+          '<div class="item-nombre">' + prod.nombre + '</div>' +
+          '<div class="item-cantidad">' +
+            '<button class="cant-btn" onclick="cambiarCantidad(\'' + prod.id + '\',-1)">−</button>' +
+            '<span>' + prod.cantidad + '</span>' +
+            '<button class="cant-btn" onclick="cambiarCantidad(\'' + prod.id + '\',+1)">+</button>' +
+            '<button class="eliminar-item" onclick="eliminarDelCarrito(\'' + prod.id + '\')">🗑️</button>' +
+          '</div>' +
+        '</div>';
       });
       document.getElementById('total').textContent = sumaTotal;
     }
 
     function enviarPedido() {
       if (carrito.length === 0) return alert('El carrito está vacío');
-      const neg = productos[negocioActivo];
-      let mensaje = `Hola! Quiero hacer este pedido de ${neg.nombre}:%0A%0A`;
-      let total = 0;
-      carrito.forEach(p => {
-        const subt = p.precio * p.cantidad;
+      var neg = productos[negocioActivo];
+      var mensaje = 'Hola! Quiero hacer este pedido de ' + neg.nombre + ':%0A%0A';
+      var total = 0;
+      carrito.forEach(function(p) {
+        var subt = p.precio * p.cantidad;
         total += subt;
-        mensaje += `• ${p.cantidad}x ${p.nombre} — $${subt}%0A`;
+        mensaje += '• ' + p.cantidad + 'x ' + p.nombre + ' — $' + subt + '%0A';
       });
-      mensaje += `%0A🔸 TOTAL: $${total} MXN`;
-      window.open(`https://wa.me/${neg.telefono}?text=${mensaje}`, '_blank');
+      mensaje += '%0A🔸 TOTAL: $' + total + ' MXN';
+      window.open('https://wa.me/' + neg.telefono + '?text=' + encodeURIComponent(mensaje), '_blank');
     }
   </script>
 </body>
