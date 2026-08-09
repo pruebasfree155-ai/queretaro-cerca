@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Querétaro Cerca - Tu plataforma local</title>
+  <title>Querétaro Cerca - Compra cerca de ti</title>
   <style>
     * {
       margin: 0;
@@ -14,116 +14,215 @@
     body {
       line-height: 1.6;
       color: #333;
+      background: #fcfcfc;
     }
     header {
-      background: #7b2cbf;
+      background: #214239;
       color: white;
       padding: 1rem 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(33, 66, 57, 0.15);
     }
     .logo {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: bold;
+    }
+    nav {
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
     }
     nav a {
       color: white;
-      margin-left: 1.5rem;
+      margin-left: 1.2rem;
       text-decoration: none;
+      font-weight: 500;
     }
-    nav a:hover {
-      color: #ffd60a;
+    nav a:hover { color: #ff7632; }
+    .btn-carrito {
+      background: #ff7632; color: white; border: none;
+      padding: 0.5rem 1rem; border-radius: 6px;
+      font-weight: bold; cursor: pointer; position: relative; margin-left: 1rem;
+    }
+    .btn-carrito:hover { background: #e23006; }
+    .contador-carrito {
+      position: absolute; top: -8px; right: -8px;
+      background: #e23006; color: white; border-radius: 50%;
+      width: 22px; height: 22px; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: bold;
     }
     .hero {
-      background: linear-gradient(135deg, #7b2cbf, #c77dff);
-      color: white;
-      padding: 4rem 5%;
-      text-align: center;
+      background: linear-gradient(135deg, #214239, #3a7060);
+      color: white; padding: 2.5rem 5%; text-align: center;
     }
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin: 0 auto 2rem;
-    }
+    .hero h1 { font-size: 2.3rem; margin-bottom: 0.8rem; }
     .btn-principal {
-      background: #ffd60a;
-      color: #2b2d42;
-      border: none;
-      padding: 0.9rem 2rem;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s;
+      background: #ff7632; color: white; border: none;
+      padding: 0.8rem 2rem; font-size: 1.05rem;
+      font-weight: bold; border-radius: 8px; cursor: pointer;
     }
-    .btn-principal:hover {
-      transform: scale(1.05);
+    .btn-principal:hover { background: #e23006; }
+
+    /* ===== CATEGORÍAS ===== */
+    .seccion-categorias {
+      padding: 1.5rem 5%; background: #f4f7f6;
     }
+    .seccion-categorias h2 {
+      text-align: center; color: #214239;
+      margin-bottom: 1.2rem; font-size: 1.4rem;
+    }
+    .categorias {
+      display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center;
+    }
+    .cat-btn {
+      background: white; color: #214239; border: 2px solid #214239;
+      padding: 0.6rem 1.2rem; border-radius: 25px;
+      font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .cat-btn:hover, .cat-btn.activa {
+      background: #214239; color: white;
+    }
+    .cat-btn.todos.activa {
+      background: #ff7632; border-color: #ff7632;
+    }
+
     .seccion {
-      padding: 3rem 5%;
-      max-width: 1000px;
-      margin: 0 auto;
+      padding: 2.5rem 5%; max-width: 1200px; margin: 0 auto;
     }
     .seccion h2 {
-      text-align: center;
-      color: #5a189a;
-      margin-bottom: 2rem;
-      font-size: 1.8rem;
+      text-align: center; color: #214239;
+      margin-bottom: 2rem; font-size: 1.8rem;
     }
-    .fondo-claro {
-      background: #f8f9fa;
+
+    /* ===== TARJETAS DE NEGOCIO ===== */
+    .negocios-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem;
     }
-    .ventajas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
+    .tarjeta-negocio {
+      background: white; border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(33, 66, 57, 0.12);
+      overflow: hidden; transition: all 0.3s; cursor: pointer;
     }
-    .tarjeta {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      text-align: center;
+    .tarjeta-negocio:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(33, 66, 57, 0.18);
     }
-    .tarjeta h3 {
-      color: #7b2cbf;
-      margin-bottom: 0.8rem;
+    .tarjeta-negocio.oculto { display: none !important; }
+    .logo-negocio {
+      width: 100%; height: 160px; object-fit: cover;
+      background: #e0e0e0; /* gris de respaldo si no carga */
     }
-    .formulario {
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .encabezado-negocio {
+      background: linear-gradient(135deg, #214239, #3a7060);
+      color: white; padding: 1rem 1.2rem;
     }
-    .formulario input, .formulario textarea {
-      width: 100%;
-      padding: 0.9rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
+    .encabezado-negocio h3 { font-size: 1.15rem; margin-bottom: 0.3rem; }
+    .categoria {
+      display: inline-block; background: #ff7632; color: white;
+      padding: 0.2rem 0.7rem; border-radius: 20px;
+      font-size: 0.8rem; font-weight: bold; margin-top: 0.3rem;
     }
-    .formulario input:focus, .formulario textarea:focus {
-      outline: none;
-      border-color: #7b2cbf;
+    .cuerpo-negocio { padding: 1.1rem; }
+    .descripcion-negocio { color: #555; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .ver-productos {
+      display: inline-block; color: #ff7632; font-weight: bold;
+      font-size: 0.9rem; cursor: pointer;
     }
+    .ver-productos:hover { text-decoration: underline; }
+
+    /* ===== VENTANA DE PRODUCTOS ===== */
+    .ventana-productos {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 500;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .ventana-activa { display: flex; }
+    .contenido-ventana {
+      background: white; border-radius: 16px; max-width: 600px;
+      width: 100%; max-height: 90vh; overflow-y: auto;
+    }
+    .cabecera-ventana {
+      background: #214239; color: white; padding: 1.2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0;
+    }
+    .btn-cerrar {
+      background: #e23006; color: white; border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 1.2rem; cursor: pointer;
+    }
+    .lista-productos { padding: 1.2rem; }
+    .producto-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.8rem; border-bottom: 1px solid #eee; gap: 0.6rem; flex-wrap: wrap;
+    }
+    .producto-nombre {
+      font-weight: 600; color: #214239; flex: 1; min-width: 150px;
+    }
+    .producto-precio {
+      color: #e23006; font-weight: bold; font-size: 0.95rem; white-space: nowrap;
+    }
+    .btn-agregar {
+      background: #ff7632; color: white; border: none;
+      padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer;
+      font-weight: bold; font-size: 0.85rem; white-space: nowrap;
+    }
+    .btn-agregar:hover { background: #e23006; }
+
+    /* ===== CARRITO ===== */
+    .panel-carrito {
+      position: fixed; top: 0; right: -400px; width: 380px; max-width: 100%;
+      height: 100vh; background: white; box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+      z-index: 600; transition: right 0.3s ease; display: flex; flex-direction: column;
+    }
+    .panel-carrito.abierto { right: 0; }
+    .cabecera-carrito {
+      background: #214239; color: white; padding: 1.2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .cerrar-carrito {
+      background: #ff7632; color: white; border: none;
+      padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold;
+    }
+    .lista-carrito { flex: 1; overflow-y: auto; padding: 1.2rem; }
+    .item-carrito {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 0; border-bottom: 1px dashed #ddd; gap: 0.5rem;
+    }
+    .item-nombre { font-size: 0.95rem; flex: 1; }
+    .item-cantidad { display: flex; align-items: center; gap: 0.3rem; }
+    .cant-btn {
+      background: #ff7632; color: white; border: none;
+      width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: bold;
+    }
+    .eliminar-item { color: #e23006; border: none; background: none; cursor: pointer; font-size: 1.1rem; }
+    .total-carrito { padding: 1.2rem; border-top: 2px solid #eee; }
+    .total-texto { font-size: 1.1rem; font-weight: bold; color: #214239; margin-bottom: 0.8rem; }
+    .btn-pedir {
+      width: 100%; background: #e23006; color: white; border: none;
+      padding: 0.9rem; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer;
+    }
+    .btn-pedir:hover { background: #ff7632; }
+    .carrito-vacio { text-align: center; color: #888; padding: 2rem; }
+
     footer {
-      background: #2b2d42;
-      color: white;
-      text-align: center;
-      padding: 2rem 5%;
-      margin-top: 2rem;
+      background: #214239; color: white; text-align: center;
+      padding: 2rem 5%; margin-top: 2rem;
     }
+
     @media (max-width: 768px) {
-      header { flex-direction: column; gap: 1rem; }
-      .hero h1 { font-size: 1.8rem; }
-      nav a { margin: 0 0.7rem; }
+      header { flex-direction: column; gap: 0.8rem; }
+      .hero h1 { font-size: 1.7rem; }
+      .negocios-grid { grid-template-columns: 1fr; }
+      .panel-carrito { width: 100%; right: -100%; }
     }
   </style>
 </head>
@@ -132,61 +231,316 @@
   <header>
     <div class="logo">🏪 Querétaro Cerca</div>
     <nav>
-      <a href="#que-es">¿Qué es?</a>
-      <a href="#ventajas">Ventajas</a>
-      <a href="#registro">Regístrate</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#inicio">Inicio</a>
+      <a href="#negocios">Negocios</a>
+      <button class="btn-carrito" onclick="abrirCarrito()">
+        🛒 Carrito <span class="contador-carrito" id="contador">0</span>
+      </button>
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>Vende fácil, vende cerca</h1>
-    <p>Plataforma web gratuita para negocios queretanos. Crea tu escaparate en línea SIN comisiones y SIN tecnicismos.</p>
-    <button class="btn-principal" onclick="alert('¡Gracias por interesarte! Pronto abriremos los registros.')">¡Registra tu negocio!</button>
+  <section class="hero" id="inicio">
+    <h1>Tu tienda cerca de ti</h1>
+    <p>Explora negocios de Querétaro, filtra por categoría, agrega productos al carrito y pide por WhatsApp.</p>
+    <button class="btn-principal" onclick="document.getElementById('negocios').scrollIntoView({behavior:'smooth'})">🛍️ Ver Negocios</button>
   </section>
 
-  <section id="que-es" class="seccion">
-    <h2>¿Qué es Querétaro Cerca?</h2>
-    <p>Una plataforma sencilla y gratuita diseñada para los negocios tradicionales de Querétaro. Creamos tu escaparate en internet en menos de 15 minutos, sin que necesites saber tecnología ni pagar comisiones por cada venta.</p>
-  </section>
-
-  <section id="ventajas" class="seccion fondo-claro">
-    <h2>¿Por qué elegirnos?</h2>
-    <div class="ventajas-grid">
-      <div class="tarjeta">
-        <h3>🆓 100% Gratis</h3>
-        <p>No pagas nada por estar aquí. Sin comisiones, sin mensualidades.</p>
-      </div>
-      <div class="tarjeta">
-        <h3>🏡 Somos Locales</h3>
-        <p>Hecha para Querétaro y por gente de Querétaro.</p>
-      </div>
-      <div class="tarjeta">
-        <h3>⚡ Rápido y Fácil</h3>
-        <p>Regístrate y crea tu perfil en menos de 15 minutos.</p>
-      </div>
-      <div class="tarjeta">
-        <h3>🚫 Sin Comisiones</h3>
-        <p>No te quitamos ni un peso de tus ventas.</p>
-      </div>
+  <!-- ========== CATEGORÍAS ========== -->
+  <section class="seccion-categorias">
+    <h2>📂 Filtrar por categoría</h2>
+    <div class="categorias">
+      <button class="cat-btn todos activa" onclick="filtrar('todos', this)">✅ Todos</button>
+      <button class="cat-btn" onclick="filtrar('automotriz', this)">🔧 Automotriz</button>
+      <button class="cat-btn" onclick="filtrar('alimentos', this)">🍞 Alimentos</button>
+      <button class="cat-btn" onclick="filtrar('salud', this)">💊 Salud y Farmacia</button>
+      <button class="cat-btn" onclick="filtrar('hogar', this)">🏠 Hogar y Construcción</button>
+      <button class="cat-btn" onclick="filtrar('belleza', this)">💄 Belleza y Cuidado</button>
+      <button class="cat-btn" onclick="filtrar('servicios', this)">📋 Servicios</button>
     </div>
   </section>
 
-  <section id="registro" class="seccion">
-    <h2>Registra tu negocio</h2>
-    <form class="formulario" onsubmit="alert('✅ ¡Gracias! Recibimos tu solicitud. Pronto nos pondremos en contacto contigo.'); this.reset(); return false;">
-      <input type="text" placeholder="Nombre de tu negocio" required>
-      <input type="text" placeholder="Tu barrio o zona en Querétaro" required>
-      <input type="email" placeholder="Tu correo electrónico" required>
-      <textarea placeholder="Cuéntanos brevemente qué vendes..." rows="4"></textarea>
-      <button type="submit" class="btn-principal">Enviar solicitud</button>
-    </form>
+  <!-- ========== NEGOCIOS ========== -->
+  <section class="seccion" id="negocios">
+    <h2>🏪 Negocios disponibles</h2>
+    <div class="negocios-grid" id="lista-negocios">
+
+      <!-- 🔧 AUTOMOTRIZ -->
+      <div class="tarjeta-negocio" data-cat="automotriz" onclick="abrirProductos('frenos')">
+        <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&h=400&fit=crop" alt="Frenos Cervantes" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🔧 Frenos Cervantes</h3><span class="categoria">Automotriz</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Especialistas en frenos: balatas, discos y reparación completa.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="automotriz" onclick="abrirProductos('tallermecanico')">
+        <img src="https://images.unsplash.com/photo-1530089711124-9ca3a09b43e6?w=600&h=400&fit=crop" alt="Taller El Mecánico" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>⚙️ Taller El Mecánico</h3><span class="categoria">Automotriz</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Afinaciones, motor, suspensión y diagnóstico general.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="automotriz" onclick="abrirProductos('llantera')">
+        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&h=400&fit=crop" alt="Llantera El Rodado" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🛞 Llantera El Rodado</h3><span class="categoria">Automotriz</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Venta, cambio, alineación y balanceo de llantas.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="automotriz" onclick="abrirProductos('autolavado')">
+        <img src="https://images.unsplash.com/photo-1520319988239-8b75f1abf7d5?w=600&h=400&fit=crop" alt="Auto Lavado Rápido" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🚿 Auto Lavado Rápido</h3><span class="categoria">Automotriz</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Lavado completo, encerado, limpieza de interiores.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="automotriz" onclick="abrirProductos('refaccionaria')">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop" alt="Refaccionaría Qro" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🔩 Refaccionaría Qro</h3><span class="categoria">Automotriz</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Refacciones originales y genéricas para todas las marcas.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+
+      <!-- 🍞 ALIMENTOS -->
+      <div class="tarjeta-negocio" data-cat="alimentos" onclick="abrirProductos('panaderia')">
+        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop" alt="Panadería El Sol" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>Panadería El Sol</h3><span class="categoria">Alimentos</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Pan recién horneado todos los días. Recetas tradicionales.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="alimentos" onclick="abrirProductos('frutas')">
+        <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=600&h=400&fit=crop" alt="Frutas y Verduras Luli" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>Frutas y Verduras Luli</h3><span class="categoria">Alimentos</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Directo del campo queretano a tu mesa. Siempre frescos.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="alimentos" onclick="abrirProductos('carniceria')">
+        <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=600&h=400&fit=crop" alt="Carnicería La Esquina" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>Carnicería La Esquina</h3><span class="categoria">Alimentos</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Carnes de calidad, cortes especiales y servicio personalizado.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="alimentos" onclick="abrirProductos('comidas')">
+        <img src="https://images.unsplash.com/photo-1590369159662-5137ee10a495?w=600&h=400&fit=crop" alt="Comidas Doña Mary" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🍽️ Comidas Doña Mary</h3><span class="categoria">Alimentos</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Comida casera, guisos tradicionales y menú del día.</p><span class="ver-productos">👆 Clic para ver menú</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="alimentos" onclick="abrirProductos('tortilleria')">
+        <img src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&h=400&fit=crop" alt="Tortillería La Milpa" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🌽 Tortillería La Milpa</h3><span class="categoria">Alimentos</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Tortillas de maíz hechas al momento. Masa y totopos.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+
+      <!-- 💊 SALUD -->
+      <div class="tarjeta-negocio" data-cat="salud" onclick="abrirProductos('farmacia')">
+        <img src="https://images.unsplash.com/photo-1586769852046-47a13a0a7d85?w=600&h=400&fit=crop" alt="Farmacia San José" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>💊 Farmacia San José</h3><span class="categoria">Salud</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Medicamentos, productos de salud y consultorio médico.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="salud" onclick="abrirProductos('naturista')">
+        <img src="https://images.unsplash.com/photo-1597645693587-7c0b348c5d31?w=600&h=400&fit=crop" alt="Naturista El Sol" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🌿 Naturista El Sol</h3><span class="categoria">Salud</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Productos naturales, vitaminas y suplementos.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="salud" onclick="abrirProductos('optica')">
+        <img src="https://images.unsplash.com/photo-1574279606514-91b4c3a60e83?w=600&h=400&fit=crop" alt="Óptica Visual Clar" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>👓 Óptica Visual Clar</h3><span class="categoria">Salud</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Examen de la vista, armazones y lentes.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="salud" onclick="abrirProductos('dentista')">
+        <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=400&fit=crop" alt="Dentista Sonrisa" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🦷 Dentista Sonrisa</h3><span class="categoria">Salud</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Limpiezas, empastes y atención dental integral.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="salud" onclick="abrirProductos('podologia')">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop" alt="Podología y Bienestar" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🦶 Podología y Bienestar</h3><span class="categoria">Salud</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Cuidado de pies, uñas y plantillas personalizadas.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+
+      <!-- 🏠 HOGAR -->
+      <div class="tarjeta-negocio" data-cat="hogar" onclick="abrirProductos('ferreteria')">
+        <img src="https://images.unsplash.com/photo-1504328345060-7307513541f3?w=600&h=400&fit=crop" alt="Ferretería El Clavito" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🔩 Ferretería El Clavito</h3><span class="categoria">Hogar</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Herramientas, materiales de construcción y artículos para el hogar.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="hogar" onclick="abrirProductos('abarrotes')">
+        <img src="https://images.unsplash.com/photo-1604719312566-89d108c01494?w=600&h=400&fit=crop" alt="Abarrotes Don Pepe" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🏪 Abarrotes Don Pepe</h3><span class="categoria">Hogar</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Despensa, bebidas, limpieza y todo para tu casa.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="hogar" onclick="abrirProductos('muebles')">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop" alt="Muebles Casa Linda" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🛋️ Muebles Casa Linda</h3><span class="categoria">Hogar</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Sofás, mesas, recámaras y decoración.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="hogar" onclick="abrirProductos('pinturas')">
+        <img src="https://images.unsplash.com/photo-1541700521886-8513a04b8c04?w=600&h=400&fit=crop" alt="Pinturas Color Qro" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🎨 Pinturas Color Qro</h3><span class="categoria">Hogar</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Pinturas, brochas e impermeabilizantes.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="hogar" onclick="abrirProductos('jardineria')">
+        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop" alt="Jardinería El Verde" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🌱 Jardinería El Verde</h3><span class="categoria">Hogar</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Plantas, árboles, macetas y herramientas de jardín.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+
+      <!-- 💄 BELLEZA -->
+      <div class="tarjeta-negocio" data-cat="belleza" onclick="abrirProductos('salon')">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop" alt="Salón Lucero" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>💄 Salón Lucero</h3><span class="categoria">Belleza</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Cortes, peinados, tinte y uñas.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="belleza" onclick="abrirProductos('spa')">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&h=400&fit=crop" alt="Spa Relajante" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🧖 Spa Relajante</h3><span class="categoria">Belleza</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Masajes, faciales y tratamientos corporales.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="belleza" onclick="abrirProductos('barberia')">
+        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&h=400&fit=crop" alt="Barbería Caballeros" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>✂️ Barbería Caballeros</h3><span class="categoria">Belleza</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Corte de cabello y arreglo de barba.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="belleza" onclick="abrirProductos('productosbelleza')">
+        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&h=400&fit=crop" alt="Productos Bella" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>💋 Productos Bella</h3><span class="categoria">Belleza</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Maquillaje, cremas y cuidado de piel.</p><span class="ver-productos">👆 Clic para ver productos</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="belleza" onclick="abrirProductos('estetica')">
+        <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a3294b?w=600&h=400&fit=crop" alt="Estética Diosa" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>✨ Estética Diosa</h3><span class="categoria">Belleza</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Depilación, limpieza facial y cejas.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+
+      <!-- 📋 SERVICIOS -->
+      <div class="tarjeta-negocio" data-cat="servicios" onclick="abrirProductos('limpieza')">
+        <img src="https://images.unsplash.com/photo-1581579438747-104c53d7fbc0?w=600&h=400&fit=crop" alt="Servicios de Limpieza" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🧹 Limpieza y Mantenimiento</h3><span class="categoria">Servicios</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Limpieza de casas y oficinas.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="servicios" onclick="abrirProductos('plomeria')">
+        <img src="https://images.unsplash.com/photo-1585704032915-1399b1250455?w=600&h=400&fit=crop" alt="Plomería El Gota" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>🚿 Plomería El Gota</h3><span class="categoria">Servicios</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Reparación de fugas e instalaciones.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="servicios" onclick="abrirProductos('electricidad')">
+        <img src="https://images.unsplash.com/photo-1621903118140-91a24548e2d8?w=600&h=400&fit=crop" alt="Electricidad Qro" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>⚡ Electricidad Qro</h3><span class="categoria">Servicios</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Instalaciones y reparaciones eléctricas.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="servicios" onclick="abrirProductos('contador')">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop" alt="Contador y Asesoría" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>📊 Contador y Asesoría</h3><span class="categoria">Servicios</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Contabilidad, declaraciones y asesoría fiscal.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+      <div class="tarjeta-negocio" data-cat="servicios" onclick="abrirProductos('mensajeria')">
+        <img src="https://images.unsplash.com/photo-1563067635010-71a279ce436b?w=600&h=400&fit=crop" alt="Mensajería Rápida" class="logo-negocio" loading="lazy">
+        <div class="encabezado-negocio"><h3>📦 Mensajería Rápida</h3><span class="categoria">Servicios</span></div>
+        <div class="cuerpo-negocio"><p class="descripcion-negocio">Entrega de paquetería y documentos.</p><span class="ver-productos">👆 Clic para ver servicios</span></div>
+      </div>
+
+    </div>
   </section>
 
-  <footer id="contacto">
+  <!-- ========== VENTANA DE PRODUCTOS ========== -->
+  <div class="ventana-productos" id="ventanaProductos" onclick="cerrarPorFuera(event)">
+    <div class="contenido-ventana">
+      <div class="cabecera-ventana">
+        <h3 id="titulo-negocio">Negocio</h3>
+        <button class="btn-cerrar" onclick="cerrarProductos()">×</button>
+      </div>
+      <div class="lista-productos" id="lista-productos-ventana"></div>
+    </div>
+  </div>
+
+  <!-- ========== CARRITO ========== -->
+  <div class="panel-carrito" id="panelCarrito">
+    <div class="cabecera-carrito">
+      <h3>🛒 Tu Carrito</h3>
+      <button class="cerrar-carrito" onclick="cerrarCarrito()">✕ Cerrar</button>
+    </div>
+    <div class="lista-carrito" id="lista-carrito">
+      <p class="carrito-vacio">Tu carrito está vacío 😊<br>Explora negocios y agrega productos</p>
+    </div>
+    <div class="total-carrito" id="seccion-total" style="display:none;">
+      <div class="total-texto">Total: $<span id="total">0</span> MXN</div>
+      <button class="btn-pedir" onclick="enviarPedido()">📦 Enviar pedido por WhatsApp</button>
+    </div>
+  </div>
+  <div id="cortina" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:550;display:none;" onclick="cerrarCarrito()"></div>
+
+  <footer>
     <p>📧 contacto@queretarocerca.mx | 📍 Querétaro, México</p>
-    <p>@queretarocerca — ¡Apoya lo de aquí!</p>
+    <p>@queretarocerca — ¡Apoya lo local, compra cerca! 💚</p>
   </footer>
 
-</body>
-</html>
+  <script>
+    // =====================================
+    // ✅ FILTRADO DE CATEGORÍAS — ARREGLADO
+    // =====================================
+    function filtrar(categoria, boton) {
+      // Quitar activa de todos
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('activa'));
+      // Activar el pulsado
+      boton.classList.add('activa');
+
+      const tarjetas = document.querySelectorAll('.tarjeta-negocio');
+      tarjetas.forEach(tarjeta => {
+        const catTarjeta = tarjeta.getAttribute('data-cat');
+        if (categoria === 'todos') {
+          tarjeta.classList.remove('oculto');
+        } else {
+          tarjeta.classList.toggle('oculto', catTarjeta !== categoria);
+        }
+      });
+    }
+
+    // =====================================
+    // ✅ BASE DE DATOS COMPLETA DE PRODUCTOS
+    // =====================================
+    const catalogo = {
+      frenos: {nombre:"🔧 Frenos Cervantes", tel:"524421235000", items:[
+        {id:"f1",n:"Cambio balatas delanteras",p:850},
+        {id:"f2",n:"Cambio balatas traseras",p:750},
+        {id:"f3",n:"Rectificado discos (par)",p:600},
+        {id:"f4",n:"Cambio líquido frenos",p:350},
+        {id:"f5",n:"Revisión completa frenos",p:450}
+      ]},
+      tallermecanico: {nombre:"⚙️ Taller El Mecánico", tel:"524421112233", items:[
+        {id:"tm1",n:"Afinación completa",p:950},
+        {id:"tm2",n:"Cambio aceite y filtros",p:450},
+        {id:"tm3",n:"Reparación suspensión",p:1200},
+        {id:"tm4",n:"Diagnóstico computarizado",p:350},
+        {id:"tm5",n:"Servicio clutch",p:1800}
+      ]},
+      llantera: {nombre:"🛞 Llantera El Rodado", tel:"524422223344", items:[
+        {id:"ll1",n:"Llanta económica",p:1200},
+        {id:"ll2",n:"Llanta marca reconocida",p:2100},
+        {id:"ll3",n:"Alineación",p:350},
+        {id:"ll4",n:"Balanceo por llanta",p:80},
+        {id:"ll5",n:"Válvula nueva",p:40}
+      ]},
+      autolavado: {nombre:"🚿 Auto Lavado Rápido", tel:"524423334455", items:[
+        {id:"al1",n:"Lavado sencillo",p:150},
+        {id:"al2",n:"Lavado completo",p:250},
+        {id:"al3",n:"Encerado",p:400},
+        {id:"al4",n:"Limpieza interior",p:350},
+        {id:"al5",n:"Paquete completo",p:600}
+      ]},
+      refaccionaria: {nombre:"🔩 Refaccionaría Qro", tel:"524424445566", items:[
+        {id:"rf1",n:"Filtro de aceite",p:180},
+        {id:"rf2",n:"Bujía (cada una)",p:95},
+        {id:"rf3",n:"Correa de distribución",p:450},
+        {id:"rf4",n:"Pastillas de freno",p:380},
+        {id:"rf5",n:"Aceite motor litro",p:120}
+      ]},
+      panaderia: {nombre:"Panadería El Sol", tel:"524425556677", items:[
+        {id:"pn1",n:"Pan dulce (pieza)",p:25},
+        {id:"pn2",n:"Bolillo (kg)",p:90},
+        {id:"pn3",n:"Concha",p:30},
+        {id:"pn4",n:"Pan de muerto",p:35},
+        {id:"pn5",n:"Baguette",p:40}
+      ]},
+      frutas: {nombre:"Frutas y Verduras Luli", tel:"524426667788", items:[
+        {id:"ft1",n:"Manzana kg",p:65},
+        {id:"ft2",n:"Plátano kg",p:45},
+        {id:"ft3",n:"Aguacate kg",p:120},
+        {id:"ft4",n:"Tomate kg",p:55},
+        {id:"ft5",n:"Cebolla kg",p:35}
+      ]},
+      carniceria: {nombre:"Carnicería La Esquina", tel:"524427778899", items:[
+        {id:"cr1",n:"Carne de res kg",p:240},
+        {id:"cr2",n:"Puerco kg",p:180},
+        {id:"cr3",n:"Pollo entero",p:130},
+        {id:"cr4",n:"Chicharrón kg",p:160},
+        {id:"cr5",n:"Longaniza kg",p:190}
+      ]},
+      comidas: {nombre:"🍽️ Comidas Doña Mary", tel:"524428889900",
+                
